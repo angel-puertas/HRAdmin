@@ -1,0 +1,30 @@
+<?php
+require_once('db.php');
+
+if(isset($_POST['email-confirmation'])) {
+    $email = $_POST['email'];
+    $inputtedCode = (int) $_POST['code'];
+    $isEmailConfirmed = 1;
+
+    $stmt = $userDB->prepare("SELECT confirmationCode FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->bind_result($storedCode);
+    $stmt->fetch();
+    $stmt->close();
+    
+    if ($inputtedCode !== $storedCode) {
+        die('Wrong confirmation code');
+    }
+
+    $stmt = $userDB->prepare("UPDATE users SET isEmailConfirmed = ? WHERE email = ?");
+    $stmt->bind_param("is", $isEmailConfirmed, $email);
+    $stmt->execute();
+    $stmt->close();
+
+    $userDB->close();
+    exit('Email confirmation successful');
+} else {
+    die('No email confirmation data received');
+}
+?>

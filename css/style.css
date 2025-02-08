@@ -1,0 +1,88 @@
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    "logo menu"
+    "body body"
+    "footer footer";
+  grid-template-columns: 2fr 1fr;
+  border: 10px black;
+  padding: 20px;
+}
+
+.logo > img {
+  width: 100px;
+}
+
+.logo {
+  grid-area: logo;
+}
+
+.menu {
+  grid-area: menu;
+}
+
+.menu > ul {
+  list-style-type: none;
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+}
+
+.body {
+  grid-area: body;
+  border: 3px solid black;
+  padding: 10px;
+}
+
+.footer {
+  grid-area: footer;
+  display: flex;
+  justify-content: center;
+}
+
+#modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
+  justify-content: center;
+  align-items: center;
+}
+
+#modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 50%;
+}
+
+#login-signup {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.menu ul li,
+#login-signup div a {
+  color: blue;
+  text-decoration: underline;
+}
+
+#modal ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#modal input {
+  justify-content: right;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 24px;
+}
