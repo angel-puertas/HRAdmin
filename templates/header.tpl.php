@@ -30,7 +30,7 @@ session_start();
                 <li><a href='personInformation.php'>People</a></li>
                 <li><a href='categoryAdministration.php'>Categories</a></li>
                 <?php if(empty($_SESSION['user_id'])) { ?>
-                    <li><a onclick='openModal("login")'>Log In</a></li>
+                    <li><a id='login-link' onclick='openModal("login")'>Log In</a></li>
                 <?php } else { ?>
                     <li><a href='lib/logout.php'>Log Out</a></li>
                 <?php } ?>

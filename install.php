@@ -21,4 +21,3 @@ $sql = 'CREATE TABLE people (
     PRIMARY KEY (personID)
 );';
 ?>
-
