@@ -129,6 +129,7 @@ function handleLogin(form) {
             <div id='invalid-password-message'></div>
         </div>
         <div id="recaptcha-container"></div>
+        <input type='hidden' name='recaptcha-token' id='recaptcha-token'>
         <input type='hidden' name='login'>
         <button type='submit' name='login'>Log In</button>
     `;
@@ -138,6 +139,7 @@ function handleLogin(form) {
             "sitekey": "6Ld7GdEqAAAAADxNT_aoapkP1kf_4hOpxmnE7fpP"
         });
     }, 500);
+    
     
     $(form).on('submit', function(event) {
         event.preventDefault();
