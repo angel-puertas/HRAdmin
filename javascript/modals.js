@@ -87,12 +87,16 @@ function handleLogin(form) {
             <div><a onclick="openModal('login')">Log In</a></div>
             <div><a onclick="openModal('signup')">Sign Up</a></div>
         </div>
-        <ul>
-            <li>Email Address</li>
-            <li><input type='email' name='email' id='email'></input></li>
-            <li>Password</li>
-            <li><input type='password' name='password' id='password'></input></li>
-        </ul>
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type='email' name='email' id='email'>
+            <div id='email-message'></div>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type='password' name='password' id='password'>
+            <div id='invalid-password-message'></div>
+        </div>
         <div id="recaptcha-container"></div>
         <br>
         <input type='hidden' name='login'>
@@ -134,17 +138,21 @@ function handleSignup(form) {
             <div><a onclick="openModal('login')">Log In</a></div>
             <div><a onclick="openModal('signup')">Sign Up</a></div>
         </div>
-        <ul>
-            <li>Email Address</li>
-            <li><input type='email' name='email' id='email'></input></li>
-            <li id='email-message'></li>
-            <li>Password</li>
-            <li><input type='password' name='password' id='password'></input></li>
-            <li id='invalid-password-message'></li>
-            <li>Repeat Password</li>
-            <li><input type='password' name='repeat-password' id='repeat-password'></input></li>
-            <li id='incorrect-password-message'></li>
-        </ul>
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type='email' name='email' id='email'>
+            <div id='email-message'></div>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type='password' name='password' id='password'>
+            <div id='invalid-password-message'></div>
+        </div>
+        <div class="form-group">
+            <label for="repeat-password">Repeat Password</label>
+            <input type='password' name='repeat-password' id='repeat-password'>
+            <div id='incorrect-password-message'></div>
+        </div>
         <div id="recaptcha-container"></div>
         <br>
         <input type='hidden' name='signup'>
