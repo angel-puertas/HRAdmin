@@ -1,5 +1,6 @@
 <?php
 require_once('db.php');
+require_once __DIR__ . '/../vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -53,48 +54,16 @@ if(isset($_POST['signup'])) {
     }
     $stmt->close();
 
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-    // CONFIRMATION EMAIL
-    require '../vendor/autoload.php';
+    // DB ENTRY
+    $stmt = $userDB->prepare("INSERT INTO users (email, passwordHash) VALUES (?, ?)");
+    $stmt->bind_param("ss", $email, $passwordHash);
+    $stmt->execute();
+    $stmt->close();
+    $userDB->close();
 
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
-    $dotenv->load();
-
-    $mail = new PHPMailer(true); // Enable exceptions
-    $mailUsername = $_ENV['MAIL_USERNAME'];
-    $mailPassword = $_ENV['MAIL_PASSWORD'];
-    $confirmationCode = rand(100000, 999999);
-
-    try {
-        // SMTP settings
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = $mailUsername;
-        $mail->Password = $mailPassword;
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
-    
-        // Email content
-        $mail->setFrom($mailUsername, 'HRAdmin');
-        $mail->addAddress($email, 'User');
-        $mail->Subject = 'Registration Code';
-        $mail->Body = 'Your code: ' . $confirmationCode;
-    
-        $mail->send();
-
-        // DB ENTRY
-        $stmt = $userDB->prepare("INSERT INTO users (email, passwordHash, confirmationCode) VALUES (?, ?, ?)");
-        $stmt->bind_param("ssi", $email, $hashedPassword, $confirmationCode);
-        $stmt->execute();
-        $stmt->close();
-        $userDB->close();
-
-        exit('Email sent successfully');
-    } catch (Exception $e) {
-        exit('Email couldn\'t be sent' . $e);
-    }
+    exit("Signup successful");
 } else {
     die("No signup data received");
 }

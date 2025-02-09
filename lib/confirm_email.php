@@ -3,7 +3,7 @@ require_once('db.php');
 
 if(isset($_POST['email-confirmation'])) {
     $email = $_POST['email'];
-    $inputtedCode = (int) $_POST['code'];
+    $inputtedCode = (int) $_POST['confirmation-code'];
     $isEmailConfirmed = 1;
 
     $stmt = $userDB->prepare("SELECT confirmationCode FROM users WHERE email = ?");

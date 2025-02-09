@@ -161,7 +161,9 @@ function handleLogin(form) {
             contentType: false,
             success: function(response) {
                 console.log("Response from server:", response);
-                if (response.includes("Login successful")) {
+                if (response.includes("Email address unconfirmed.")) {
+                    emailVerification(form, formData.get('email'));
+                } else if (response.includes("Login successful")) {
                     modal.style.display = 'none';
                     location.reload();
                 }
@@ -276,40 +278,63 @@ function handleSignup(form) {
                 console.log("Response from server:", response);
                 alert(response);
 
-                if (response.includes("Email sent successfully")) {
-                    $(form).html(`
-                        <div class="form-group">
-                            <input type='hidden' name='email' id='email'>
-                            <label for="confirmation-code">Confirmation Code</label>
-                            <input type='text' name='confirmation-code' id='confirmation-code'>
-                        </div>
-                        <input type='hidden' name='email-confirmation'>
-                        <button type='submit' name='email-confirmation' id='confirm'>Confirm</button>
-                    `);
-
-                    $('#email').val(formData.get('email'));
-
-                    $(form).off('submit');
-                    $(form).on('submit', function(event) {
-                        event.preventDefault();
-                
-                        $.ajax({
-                            url: '/HRAdmin/lib/confirm_email.php',
-                            type: 'POST',
-                            data: new FormData(this),
-                            processData: false,
-                            contentType: false,
-                            success: function(response){
-                                console.log("Response from server:", response);
-                                alert(response);
-                                if (response.includes("Email confirmation successful")) {
-                                    modal.style.display = "none";
-                                }
-                            }
-                        });
-                    });
+                if (response.includes("Signup successful")) {
+                    emailVerification(form, formData.get('email'));
                 }
             }
         });
     });
 };
+
+
+function emailVerification(form, email) {
+    let formData = new FormData();
+    formData.append('email', email);
+
+    $.ajax({
+        url: '/HRAdmin/lib/send_confirmation_email.php',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response){
+            console.log("Response from server:", response);
+            alert(response);
+
+            if (response.includes("Email sent successfully")) {
+                $(form).off('submit');
+
+                $(form).html(`
+                    <div class="form-group">
+                        <input type='hidden' name='email' id='email'>
+                        <label for="confirmation-code">Confirmation Code</label>
+                        <input type='text' name='confirmation-code' id='confirmation-code'>
+                    </div>
+                    <input type='hidden' name='email-confirmation'>
+                    <button type='submit' name='email-confirmation' id='confirm'>Confirm</button>
+                `);
+
+                $('#email').val(formData.get('email'));
+
+                $(form).on('submit', function(event) {
+                    event.preventDefault();
+            
+                    $.ajax({
+                        url: '/HRAdmin/lib/confirm_email.php',
+                        type: 'POST',
+                        data: new FormData(this),
+                        processData: false,
+                        contentType: false,
+                        success: function(response){
+                            console.log("Response from server:", response);
+                            alert(response);
+                            if (response.includes("Email confirmation successful")) {
+                                modal.style.display = "none";
+                            }
+                        }
+                    });
+                });
+            }
+        }
+    });
+}
