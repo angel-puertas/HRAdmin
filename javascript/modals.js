@@ -20,6 +20,9 @@ function openModal(mode, personID) {
         case "edit":
             handleEdit(form, personID);
             break;
+        default:
+            console.log("Invalid mode");
+            break;
     }
 
     modal.style.display = 'flex';
@@ -34,18 +37,32 @@ function openModal(mode, personID) {
 function handleAdd(form) {
     form.innerHTML = `
         <h2>Add Person</h2>
-        <ul>
-            <input type='hidden' name='personID' value=''>
-            <li>First Name: <input type='text' name='firstName' value=''></li>
-            <li>Last Name: <input type='text' name='lastName' value=''></li>
-            <li>OIB: <input type='text' name='OIB' value=''></li>
-            <li>Year of Birth: <input type='text' name='yearOfBirth' value=''></li>
-            <li>Education Level: <input type='text' name='educationLevel' value=''></li>
-            <li>Years of Experience: <input type='text' name='yearsOfExperience' value=''></li>
-            <li>Job Categories: <input type='text' name='jobCategories' value=''></li>
-            <li>Resume: <input type='text' name='resume' value=''></li>
-        </ul>
-        <button type='submit' name='add'>Save Changes</button>
+        <div class='form-group form-group-people'>
+            <label for='firstName'>First Name</label>
+            <input type='text' name='firstName' value=''>
+
+            <label for='lastName'>Last Name</label>
+            <input type='text' name='lastName' value=''>
+
+            <label for='OIB'>OIB</label>
+            <input type='text' name='OIB' value=''>
+        
+            <label for='yearOfBirth'>Year of Birth</label>
+            <input type='text' name='yearOfBirth' value=''>
+
+            <label for='educationLevel'>Education Level</label>
+            <input type='text' name='educationLevel' value=''>
+
+            <label for='yearsOfExperience'>Years of Experience</label>
+            <input type='text' name='yearsOfExperience' value=''>
+
+            <label for='jobCategories'>Job Categories</label>
+            <input type='text' name='jobCategories' value=''>
+
+            <label for='resume'>Resume</label>
+            <input type='text' name='resume' value=''>
+        </div>
+        <button type='submit' name='add'>Add Person</button>
     `;
 }
 
@@ -64,24 +81,38 @@ function handleEdit(form, personID) {
 
     form.innerHTML = `
         <h2>Edit Person</h2>
-        <ul>
+        <div class='form-group form-group-people'>
             <input type='hidden' name='personID' value='${personData.personID || ""}'>
-            <li>First Name: <input type='text' name='firstName' value='${personData.firstName || ""}'></li>
-            <li>Last Name: <input type='text' name='lastName' value='${personData.lastName || ""}'></li>
-            <li>OIB: <input type='text' name='OIB' value='${personData.OIB || ""}'></li>
-            <li>Year of Birth: <input type='text' name='yearOfBirth' value='${personData.yearOfBirth || ""}'></li>
-            <li>Education Level: <input type='text' name='educationLevel' value='${personData.educationLevel || ""}'></li>
-            <li>Years of Experience: <input type='text' name='yearsOfExperience' value='${personData.yearsOfExperience || ""}'></li>
-            <li>Job Categories: <input type='text' name='jobCategories' value='${personData.jobCategories || ""}'></li>
-            <li>Resume: <input type='text' name='resume' value='${personData.resume || ""}'></li>
-        </ul>
+
+            <label for='firstName'>First Name</label>
+            <input type='text' name='firstName' value='${personData.firstName || ""}'>
+
+            <label for='lastName'>Last Name</label>
+            <input type='text' name='lastName' value='${personData.lastName || ""}'>
+
+            <label for='OIB'>OIB</label>
+            <input type='text' name='OIB' value='${personData.OIB || ""}'>
+        
+            <label for='yearOfBirth'>Year of Birth</label>
+            <input type='text' name='yearOfBirth' value='${personData.yearOfBirth || ""}'>
+
+            <label for='educationLevel'>Education Level</label>
+            <input type='text' name='educationLevel' value='${personData.educationLevel || ""}'>
+
+            <label for='yearsOfExperience'>Years of Experience</label>
+            <input type='text' name='yearsOfExperience' value='${personData.yearsOfExperience || ""}'>
+
+            <label for='jobCategories'>Job Categories</label>
+            <input type='text' name='jobCategories' value='${personData.jobCategories || ""}'>
+
+            <label for='resume'>Resume</label>
+            <input type='text' name='resume' value='${personData.resume || ""}'>
+        </div>
         <button type='submit' name='edit'>Save Changes</button>
     `;
 }
 
 function handleLogin(form) {
-    console.log("login triggered");
-
     form.innerHTML = `
         <div id='login-signup'>
             <div><a onclick="openModal('login')">Log In</a></div>
@@ -98,7 +129,6 @@ function handleLogin(form) {
             <div id='invalid-password-message'></div>
         </div>
         <div id="recaptcha-container"></div>
-        <br>
         <input type='hidden' name='login'>
         <button type='submit' name='login'>Log In</button>
     `;
@@ -111,6 +141,14 @@ function handleLogin(form) {
     
     $(form).on('submit', function(event) {
         event.preventDefault();
+
+        // Client side reCAPTCHA validation
+        const recaptchaResponse = grecaptcha.getResponse();
+        if (!recaptchaResponse) {
+            alert('Please complete the reCAPTCHA');
+            return;
+        }
+
         let formData = new FormData(this);
 
         $.ajax({
@@ -130,9 +168,7 @@ function handleLogin(form) {
     });
 }
 
-function handleSignup(form) {
-    console.log("signup triggered");
-            
+function handleSignup(form) {            
     form.innerHTML = `
         <div id='login-signup'>
             <div><a onclick="openModal('login')">Log In</a></div>
@@ -154,7 +190,6 @@ function handleSignup(form) {
             <div id='incorrect-password-message'></div>
         </div>
         <div id="recaptcha-container"></div>
-        <br>
         <input type='hidden' name='signup'>
         <button type='submit' name='signup'>Sign Up</button>
     `;
@@ -219,6 +254,14 @@ function handleSignup(form) {
 
     $(form).on('submit', function(event) {
         event.preventDefault();
+
+        // Client side reCAPTCHA validation
+        const recaptchaResponse = grecaptcha.getResponse();
+        if (!recaptchaResponse) {
+            alert('Please complete the reCAPTCHA');
+            return;
+        }
+
         let formData = new FormData(this);
 
         $.ajax({
@@ -233,10 +276,11 @@ function handleSignup(form) {
 
                 if (response.includes("Email sent successfully")) {
                     $(form).html(`
-                        <ul>
-                            <li><input type='hidden' name='email' id='email'></input></li>
-                            <li><input type='text' name='code' id='code'></input></li>
-                        </ul>
+                        <div class="form-group">
+                            <input type='hidden' name='email' id='email'>
+                            <label for="confirmation-code">Confirmation Code</label>
+                            <input type='text' name='confirmation-code' id='confirmation-code'>
+                        </div>
                         <input type='hidden' name='email-confirmation'>
                         <button type='submit' name='email-confirmation' id='confirm'>Confirm</button>
                     `);

@@ -56,12 +56,33 @@
   background: white;
   padding: 20px;
   border-radius: 8px;
-  width: 50%;
+  width: auto;     /* instead of 50% */
+  min-width: 300px; /* prevents modal from becoming too narrow */
+  max-width: 500px; /* prevents modal from becoming too wide */
+}
+
+#modal form,
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  width: 300px;    /* fixed width for form elements */
 }
 
 #login-signup {
   display: flex;
   justify-content: space-evenly;
+  margin-bottom: 1rem;
+}
+
+#modal input,
+#modal button {
+  width: 100%;     /* will be 100% of form-group's 300px */
+}
+
+.form-group-people input {
+  margin-bottom: 1rem;
 }
 
 .menu ul li,
@@ -70,26 +91,12 @@
   text-decoration: underline;
 }
 
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-/* .form-group {
+form,
+.form-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   margin-bottom: 1rem;
-} */
-
-#modal ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-#modal input {
-  justify-content: right;
 }
 
 .close {
