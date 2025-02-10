@@ -1,39 +1,22 @@
 <?php
 require_once('db.php');
+require_once('validate_recaptcha.php');
 require_once __DIR__ . '/../vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 if(isset($_POST['signup'])) {
-    // Server side reCAPTCHA validation
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
-    $dotenv->load();
-
-    $recaptchaSecretKey = $_ENV['RECAPTCHA_SECRET_KEY'];
-    $recaptchaResponse = $_POST['g-recaptcha-response'];
-
-    if(empty($recaptchaResponse)) {
-        echo 'Empty reCAPTCHA token. Please try again.';
-        exit;
+    if (!validateRecaptcha($_POST['g-recaptcha-response'])) {
+        die("reCAPTCHA validation failed");
     }
 
-    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$recaptchaSecretKey&response=$recaptchaResponse");    
-    $responseKeys = json_decode($response, true);
-
-    if (!isset($responseKeys["success"]) || $responseKeys["success"] !== true) {
-        echo 'reCAPTCHA verification failed. Please try again.';
-        exit;
-    }
-
-
-    
     $email = $_POST['email'];
     $password = $_POST['password'];
     $repeatPassword = $_POST['repeat-password'];
 
-    // FORM VALIDATION
-    if (!str_contains($email, "@") || !str_contains($email, ".")) {
-        die("Email must contain @ and .");
+    // SERVER SIDE FORM VALIDATION
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        die("Invalid email format");
     }
 
     if (strlen($password) < 8) {

@@ -1,30 +1,13 @@
 <?php
 require_once('db.php');
+require_once('validate_recaptcha.php');
 require_once __DIR__ . '/../vendor/autoload.php';
 session_start();
 
 if(isset($_POST['login'])) {
-    // Server side reCAPTCHA validation
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
-    $dotenv->load();
-
-    $recaptchaSecretKey = $_ENV['RECAPTCHA_SECRET_KEY'];
-    $recaptchaResponse = $_POST['g-recaptcha-response'];
-
-    if(empty($recaptchaResponse)) {
-        echo 'Empty reCAPTCHA token. Please try again.';
-        exit;
+    if (!validateRecaptcha($_POST['g-recaptcha-response'])) {
+        die("reCAPTCHA validation failed");
     }
-
-    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$recaptchaSecretKey&response=$recaptchaResponse");    
-    $responseKeys = json_decode($response, true);
-
-    if (!isset($responseKeys["success"]) || $responseKeys["success"] !== true) {
-        echo 'reCAPTCHA verification failed. Please try again.';
-        exit;
-    }
-    
-
 
     $email = $_POST['email'];
     $password = $_POST['password'];

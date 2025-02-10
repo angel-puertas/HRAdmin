@@ -210,41 +210,20 @@ function handleSignup(form) {
     const repeatPassword = document.getElementById("repeat-password");
     const invalidPasswordMessage = document.getElementById("invalid-password-message");
     const incorrectPasswordMessage = document.getElementById("incorrect-password-message");
+    const email = document.getElementById("email");
+    const emailMessage = document.getElementById("email-message");
 
-    password.addEventListener("blur", function () {
-        if (password.value.length > 0 && password.value.length < 8) {
-            invalidPasswordMessage.style.color = "Red";
-            invalidPasswordMessage.innerHTML = "Password needs more than 8 characters!";
-        }
-    });
-
-    password.addEventListener("input", function () {
-        if (password.value.length == 0 || password.value.length >= 8) {
-            invalidPasswordMessage.innerHTML = "";
-        }
-    });
-
-    repeatPassword.addEventListener("blur", function() {
-        if (password.value !== repeatPassword.value) {
-            incorrectPasswordMessage.style.color = "Red";
-            incorrectPasswordMessage.innerHTML = "Passwords don't match!";
-        }
-    });
-
-    repeatPassword.addEventListener("input", function() {
-        if (password.value === repeatPassword.value) {
-            incorrectPasswordMessage.innerHTML = "";
-        }
-    });
-
-    // LIVE FORM VALIDATION (jQuery + AJAX)
-    $(document).ready(function(){
-        $('#email').on('blur', function(){
-            let email = $(this).val();
+    // Email Format + Email Availability
+    email.addEventListener("blur", function() {        
+        if (!email.checkValidity()) {
+            emailMessage.style.color = "Red";
+            emailMessage.innerHTML = "Please enter a valid email address";
+        } else {
+            emailMessage.innerHTML = "";
             $.ajax({
                 url: '/HRAdmin/lib/check_email.php',
                 type: 'POST',
-                data: { email: email },
+                data: { email: email.value },
                 success: function(response){
                     if(response == 'taken'){
                         $('#email-message').html('<span style="color: red;">Email already in use</span>');
@@ -253,7 +232,37 @@ function handleSignup(form) {
                     }
                 }
             });
-        });
+        }
+    });
+
+    // Incorrect Password Length
+    password.addEventListener("blur", function () {
+        if (password.value.length > 0 && password.value.length < 8) {
+            invalidPasswordMessage.style.color = "Red";
+            invalidPasswordMessage.innerHTML = "Password needs more than 8 characters!";
+        }
+    });
+
+    // Correct Password Length
+    password.addEventListener("input", function () {
+        if (password.value.length == 0 || password.value.length >= 8) {
+            invalidPasswordMessage.innerHTML = "";
+        }
+    });
+
+    // Incorrect Password Match
+    repeatPassword.addEventListener("blur", function() {
+        if (password.value !== repeatPassword.value) {
+            incorrectPasswordMessage.style.color = "Red";
+            incorrectPasswordMessage.innerHTML = "Passwords don't match!";
+        }
+    });
+
+    // Correct Password Match
+    repeatPassword.addEventListener("input", function() {
+        if (password.value === repeatPassword.value) {
+            incorrectPasswordMessage.innerHTML = "";
+        }
     });
 
     $(form).on('submit', function(event) {
@@ -285,7 +294,6 @@ function handleSignup(form) {
         });
     });
 };
-
 
 function emailVerification(form, email) {
     let formData = new FormData();

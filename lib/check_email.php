@@ -10,13 +10,11 @@ if(isset($_POST['email'])){
     $stmt->store_result();
 
     if($stmt->num_rows > 0){
-        echo 'taken';
+        $stmt->close();
+        exit('taken');
     } else {
-        echo 'available';
+        $stmt->close();
+        echo('available');
     }
-
-    $stmt->close();
 }
-
-$userDB->close();
 ?>
