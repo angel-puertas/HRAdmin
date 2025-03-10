@@ -2,8 +2,6 @@
 require_once('db.php');
 require_once('validate_recaptcha.php');
 require_once __DIR__ . '/../vendor/autoload.php';
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 
 if(isset($_POST['signup'])) {
     if (!validateRecaptcha($_POST['g-recaptcha-response'])) {

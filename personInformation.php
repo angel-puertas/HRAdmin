@@ -98,7 +98,7 @@ if (isset($_POST['edit'])) {
     <table>
         <thead>
             <tr>
-                <th><button id='add-button' onclick="openModal('add')">Add</button></th>
+                <th><button id='add-button' onclick="openModal('personAdd')">Add</button></th>
                 <th>No.</th>
                 <th>First Name</th>
                 <th>Last Name</th>
@@ -114,7 +114,7 @@ if (isset($_POST['edit'])) {
         <tbody>
             <?php foreach ($people as $p) { ?>
                 <tr>
-                    <td><button onclick="openModal('edit', <?=$p['personID']?>)">Edit</button></td>
+                    <td><button onclick="openModal('personEdit', <?=$p['personID']?>)">Edit</button></td>
                     <td><?=$p['personID']?></td>
                     <td id='firstName<?=$p['personID']?>'><?=$p['firstName']?></td>
                     <td id='lastName<?=$p['personID']?>'><?=$p['lastName']?></td>
@@ -127,7 +127,7 @@ if (isset($_POST['edit'])) {
                     <td>
                         <form method='post'>
                             <input type='hidden' name='personID' value='<?=$p['personID']?>'>
-                            <button type='submit' name='delete'>Delete</button>
+                            <button type='submit' name='personDelete'>Delete</button>
                         </form>
                     </td>
                 </tr>

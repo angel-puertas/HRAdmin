@@ -14,11 +14,11 @@ function openModal(mode, personID) {
         case "signup":
             handleSignup(form);
             break;
-        case "add":
-            handleAdd(form);
+        case "personAdd":
+            handlePersonAdd(form);
             break;
-        case "edit":
-            handleEdit(form, personID);
+        case "personEdit":
+            handlePersonEdit(form, personID);
             break;
         default:
             console.log("Invalid mode");
@@ -34,7 +34,7 @@ function openModal(mode, personID) {
     });
 }
 
-function handleAdd(form) {
+function handlePersonAdd(form) {
     form.innerHTML = `
         <h2>Add Person</h2>
         <div class='form-group form-group-people'>
@@ -66,7 +66,7 @@ function handleAdd(form) {
     `;
 }
 
-function handleEdit(form, personID) {
+function handlePersonEdit(form, personID) {
     let personData = {
         personID: personID,
         firstName: document.getElementById(`firstName${personID}`).textContent,
@@ -166,6 +166,8 @@ function handleLogin(form) {
                 } else if (response.includes("Login successful")) {
                     modal.style.display = 'none';
                     location.reload();
+                } else if (response.includes("No user found with that email address.")) {
+                    alert("No user found with that email address.");
                 }
             }
         });

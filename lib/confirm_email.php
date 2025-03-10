@@ -13,17 +13,17 @@ if(isset($_POST['email-confirmation'])) {
     $stmt->fetch();
     $stmt->close();
     
-    if ($inputtedCode !== $storedCode) {
+    if ($inputtedCode === $storedCode) {
+        $stmt = $userDB->prepare("UPDATE users SET isEmailConfirmed = ? WHERE email = ?");
+        $stmt->bind_param("is", $isEmailConfirmed, $email);
+        $stmt->execute();
+        $stmt->close();
+    
+        $userDB->close();
+        exit('Email confirmation successful');
+    } else {
         die('Wrong confirmation code');
     }
-
-    $stmt = $userDB->prepare("UPDATE users SET isEmailConfirmed = ? WHERE email = ?");
-    $stmt->bind_param("is", $isEmailConfirmed, $email);
-    $stmt->execute();
-    $stmt->close();
-
-    $userDB->close();
-    exit('Email confirmation successful');
 } else {
     die('No email confirmation data received');
 }
