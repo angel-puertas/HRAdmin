@@ -19,19 +19,22 @@ if(isset($_POST['login'])) {
 
     $email = $_POST['email'];
     $password = $_POST['password'];
-    $isAdmin = $_POST['is_admin'];
 
-    $stmt = $userDB->prepare("SELECT userID, email, passwordHash, isEmailConfirmed, isAdmin FROM users WHERE email = ?");
+    $stmt = $userDB->prepare("SELECT userID, email, passwordHash, isEmailConfirmed, isAdmin, isLocked, failedLoginCount FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
 
     if($stmt->num_rows > 0) {
-        $stmt->bind_result($userID, $email, $passwordHash, $isEmailConfirmed, $isAdmin);
+        $stmt->bind_result($userID, $email, $passwordHash, $isEmailConfirmed, $isAdmin, $isLocked, $failedLoginCount);
         $stmt->fetch();
 
         if(!$isEmailConfirmed) {
             die("Email address unconfirmed.");
+        }
+
+        if($isLocked) {
+            die("Account is locked.");
         }
 
         if(password_verify($password, $passwordHash)) {
@@ -39,8 +42,34 @@ if(isset($_POST['login'])) {
             $_SESSION['email'] = $email;
             $_SESSION['isAdmin'] = $isAdmin;
 
+            $stmt = $userDB->prepare("UPDATE users SET failedLoginCount = 0 WHERE userID = ?");
+            $stmt->bind_param("i", $userID);
+            $stmt->execute();
+            $stmt->close();
+
             exit("Login successful");
         } else {
+            $sql = "SELECT settingValue FROM settings WHERE settingKey = 'maxFailedLogins'";
+            $result = $userDB->query($sql);
+            $row = $result->fetch_assoc();
+            $maxFailedLogins = (int) $row['settingValue'];
+
+            $newFailedCount = $failedLoginCount + 1;
+
+            $stmt = $userDB->prepare("UPDATE users SET failedLoginCount = 0 WHERE userID = ?");
+            $stmt->bind_param("i", $userID);
+            $stmt->execute();
+            $stmt->close();
+
+            if ($newFailedCount >= $maxFailedLogins) {
+                $stmt = $userDB->prepare("UPDATE users SET isLocked = 1 WHERE userID = ?");
+                $stmt->bind_param("i", $userID);
+                $stmt->execute();
+                $stmt->close();
+
+                die("Too many failed logins. Account has been locked.");
+            }
+
             die("Invalid password.");
         }
     } else {

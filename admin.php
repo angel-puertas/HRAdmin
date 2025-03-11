@@ -47,6 +47,9 @@ if (isset($_POST['unlock'])) {
             <th>No.</th>
             <th>Email</th>
             <th>Email Confirmed</th>
+            <th>Is Locked?</th>
+            <th></th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -57,6 +60,7 @@ if (isset($_POST['unlock'])) {
                 <td><?=$user['userID']?></td>
                 <td id='email<?=$user['userID']?>'><?=$user['email']?></td>
                 <td id='isEmailConfirmed<?=$user['userID']?>'><?=$user['isEmailConfirmed']?></td>
+                <td id='isLocked<?=$user['userID']?>'><?=$user['isLocked']?></td>
                 <td>
                     <form method='post'>
                         <input type='hidden' name='userID' value='<?=$user['userID']?>'>

@@ -161,13 +161,11 @@ function handleLogin(form) {
             contentType: false,
             success: function(response) {
                 console.log("Response from server:", response);
-                if (response.includes("Email address unconfirmed.")) {
-                    emailVerification(form, formData.get('email'));
-                } else if (response.includes("Login successful")) {
+                if (response.includes("Login successful")) {
                     modal.style.display = 'none';
                     location.reload();
-                } else if (response.includes("No user found with that email address.")) {
-                    alert("No user found with that email address.");
+                } else {
+                    alert(response);
                 }
             }
         });
