@@ -10,6 +10,7 @@ session_start();
 
 <head>
     <title>HR Administration</title>
+    <link rel="icon" type="image/x-icon" href="images/logo.ico">
     <link rel='stylesheet' href='css/style.css?v=1.0'>
     <script src='javascript/modals.js?v=1.0'></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -19,7 +20,7 @@ session_start();
 <body>
     <div class='grid-container'>
         <div class='logo'>
-            <img src='images/logo.svg' alt='logo'>
+            <img src='images/logo.png' alt='logo'>
             <?php if(!empty($_SESSION['user_id'])) { ?>
                 <div>Logged in as: <?=$_SESSION['email']?></div>
             <?php } ?>

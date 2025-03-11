@@ -1,6 +1,6 @@
 <?php require_once('templates/header.tpl.php') ?>
-<div class='main'>
+<!-- <div class='body'>
     <h1>Human Resources Administration Portal</h1>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam a imperdiet lectus, bibendum semper odio. Nam convallis tellus eu vulputate faucibus. Aliquam congue, ex quis sodales blandit, enim velit scelerisque sapien, eu finibus justo justo vitae tortor. Proin nec ullamcorper nibh. Cras convallis diam quis malesuada ornare. Sed odio mi, porttitor ullamcorper orci id, hendrerit egestas dolor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut mollis scelerisque augue, sit amet faucibus diam. Nulla nec semper turpis. Sed malesuada libero id consectetur rutrum. Suspendisse ac sapien ante. Suspendisse tortor sem, convallis eu accumsan vel, sagittis a nibh. Nunc ac ultrices magna, a facilisis nisl. Suspendisse bibendum aliquet viverra. Nullam posuere molestie tempus.</p>
-</div>
+</div> -->
 <?php require_once('templates/footer.tpl.php') ?>

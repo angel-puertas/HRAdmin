@@ -127,7 +127,7 @@ if (isset($_POST['edit'])) {
                     <td>
                         <form method='post'>
                             <input type='hidden' name='personID' value='<?=$p['personID']?>'>
-                            <button type='submit' name='personDelete'>Delete</button>
+                            <button type='submit' name='delete'>Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -136,5 +136,5 @@ if (isset($_POST['edit'])) {
     </table>
 </div>
 
-<script src='javascript/live-search.js?v=1.0'></script>
+<script src='javascript/live-search.js'></script>
 <?php require_once('templates/footer.tpl.php'); ?>

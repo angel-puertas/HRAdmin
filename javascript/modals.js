@@ -1,4 +1,4 @@
-function openModal(mode, personID) {
+function openModal(mode, ID) {
     const modal = document.getElementById("modal");
     const modalContent = document.getElementById("modal-content");
     modalContent.innerHTML = "";
@@ -18,7 +18,13 @@ function openModal(mode, personID) {
             handlePersonAdd(form);
             break;
         case "personEdit":
-            handlePersonEdit(form, personID);
+            handlePersonEdit(form, ID);
+            break;
+        case "categoryAdd":
+            handleCategoryAdd(form);
+            break;
+        case "categoryEdit":
+            handleCategoryEdit(form, ID);
             break;
         default:
             console.log("Invalid mode");
@@ -34,83 +40,6 @@ function openModal(mode, personID) {
     });
 }
 
-function handlePersonAdd(form) {
-    form.innerHTML = `
-        <h2>Add Person</h2>
-        <div class='form-group form-group-people'>
-            <label for='firstName'>First Name</label>
-            <input type='text' name='firstName' value=''>
-
-            <label for='lastName'>Last Name</label>
-            <input type='text' name='lastName' value=''>
-
-            <label for='OIB'>OIB</label>
-            <input type='text' name='OIB' value=''>
-        
-            <label for='yearOfBirth'>Year of Birth</label>
-            <input type='text' name='yearOfBirth' value=''>
-
-            <label for='educationLevel'>Education Level</label>
-            <input type='text' name='educationLevel' value=''>
-
-            <label for='yearsOfExperience'>Years of Experience</label>
-            <input type='text' name='yearsOfExperience' value=''>
-
-            <label for='jobCategories'>Job Categories</label>
-            <input type='text' name='jobCategories' value=''>
-
-            <label for='resume'>Resume</label>
-            <input type='text' name='resume' value=''>
-        </div>
-        <button type='submit' name='add'>Add Person</button>
-    `;
-}
-
-function handlePersonEdit(form, personID) {
-    let personData = {
-        personID: personID,
-        firstName: document.getElementById(`firstName${personID}`).textContent,
-        lastName: document.getElementById(`lastName${personID}`).textContent,
-        OIB: document.getElementById(`OIB${personID}`).textContent,
-        yearOfBirth: document.getElementById(`yearOfBirth${personID}`).textContent,
-        educationLevel: document.getElementById(`educationLevel${personID}`).textContent,
-        yearsOfExperience: document.getElementById(`yearsOfExperience${personID}`).textContent,
-        jobCategories: document.getElementById(`jobCategories${personID}`).textContent,
-        resume: document.getElementById(`resume${personID}`).textContent
-    };
-
-    form.innerHTML = `
-        <h2>Edit Person</h2>
-        <div class='form-group form-group-people'>
-            <input type='hidden' name='personID' value='${personData.personID || ""}'>
-
-            <label for='firstName'>First Name</label>
-            <input type='text' name='firstName' value='${personData.firstName || ""}'>
-
-            <label for='lastName'>Last Name</label>
-            <input type='text' name='lastName' value='${personData.lastName || ""}'>
-
-            <label for='OIB'>OIB</label>
-            <input type='text' name='OIB' value='${personData.OIB || ""}'>
-        
-            <label for='yearOfBirth'>Year of Birth</label>
-            <input type='text' name='yearOfBirth' value='${personData.yearOfBirth || ""}'>
-
-            <label for='educationLevel'>Education Level</label>
-            <input type='text' name='educationLevel' value='${personData.educationLevel || ""}'>
-
-            <label for='yearsOfExperience'>Years of Experience</label>
-            <input type='text' name='yearsOfExperience' value='${personData.yearsOfExperience || ""}'>
-
-            <label for='jobCategories'>Job Categories</label>
-            <input type='text' name='jobCategories' value='${personData.jobCategories || ""}'>
-
-            <label for='resume'>Resume</label>
-            <input type='text' name='resume' value='${personData.resume || ""}'>
-        </div>
-        <button type='submit' name='edit'>Save Changes</button>
-    `;
-}
 
 function handleLogin(form) {
     form.innerHTML = `
@@ -345,4 +274,111 @@ function emailVerification(form, email) {
             }
         }
     });
+}
+
+function handlePersonAdd(form) {
+    form.innerHTML = `
+        <h2>Add Person</h2>
+        <div class='form-group form-group-people'>
+            <label for='firstName'>First Name</label>
+            <input type='text' name='firstName' value=''>
+
+            <label for='lastName'>Last Name</label>
+            <input type='text' name='lastName' value=''>
+
+            <label for='OIB'>OIB</label>
+            <input type='text' name='OIB' value=''>
+        
+            <label for='yearOfBirth'>Year of Birth</label>
+            <input type='text' name='yearOfBirth' value=''>
+
+            <label for='educationLevel'>Education Level</label>
+            <input type='text' name='educationLevel' value=''>
+
+            <label for='yearsOfExperience'>Years of Experience</label>
+            <input type='text' name='yearsOfExperience' value=''>
+
+            <label for='jobCategories'>Job Categories</label>
+            <input type='text' name='jobCategories' value=''>
+
+            <label for='resume'>Resume</label>
+            <input type='text' name='resume' value=''>
+        </div>
+        <button type='submit' name='add'>Add Person</button>
+    `;
+}
+
+function handlePersonEdit(form, ID) {
+    let personData = {
+        personID: ID,
+        firstName: document.getElementById(`firstName${ID}`).textContent,
+        lastName: document.getElementById(`lastName${ID}`).textContent,
+        OIB: document.getElementById(`OIB${ID}`).textContent,
+        yearOfBirth: document.getElementById(`yearOfBirth${ID}`).textContent,
+        educationLevel: document.getElementById(`educationLevel${ID}`).textContent,
+        yearsOfExperience: document.getElementById(`yearsOfExperience${ID}`).textContent,
+        jobCategories: document.getElementById(`jobCategories${ID}`).textContent,
+        resume: document.getElementById(`resume${ID}`).textContent
+    };
+
+    form.innerHTML = `
+        <h2>Edit Person</h2>
+        <div class='form-group form-group-people'>
+            <input type='hidden' name='personID' value='${personData.personID || ""}'>
+
+            <label for='firstName'>First Name</label>
+            <input type='text' name='firstName' value='${personData.firstName || ""}'>
+
+            <label for='lastName'>Last Name</label>
+            <input type='text' name='lastName' value='${personData.lastName || ""}'>
+
+            <label for='OIB'>OIB</label>
+            <input type='text' name='OIB' value='${personData.OIB || ""}'>
+        
+            <label for='yearOfBirth'>Year of Birth</label>
+            <input type='text' name='yearOfBirth' value='${personData.yearOfBirth || ""}'>
+
+            <label for='educationLevel'>Education Level</label>
+            <input type='text' name='educationLevel' value='${personData.educationLevel || ""}'>
+
+            <label for='yearsOfExperience'>Years of Experience</label>
+            <input type='text' name='yearsOfExperience' value='${personData.yearsOfExperience || ""}'>
+
+            <label for='jobCategories'>Job Categories</label>
+            <input type='text' name='jobCategories' value='${personData.jobCategories || ""}'>
+
+            <label for='resume'>Resume</label>
+            <input type='text' name='resume' value='${personData.resume || ""}'>
+        </div>
+        <button type='submit' name='edit'>Save Changes</button>
+    `;
+}
+
+function handleCategoryAdd(form) {
+    form.innerHTML = `
+        <h2>Add Category</h2>
+        <div class='form-group form-group-people'>
+            <label for='name'>Name</label>
+            <input type='text' name='name' value=''>
+        </div>
+        <button type='submit' name='add'>Add Category</button>
+    `;
+}
+
+function handleCategoryEdit(form, ID) {
+    let categoryData = {
+        categoryID: ID,
+        name: document.getElementById(`name${ID}`).textContent
+    };
+
+    form.innerHTML = `
+        <h2>Edit Category</h2>
+        <div class='form-group form-group-people'>
+            <input type='hidden' name='categoryID' value='${categoryData.categoryID || ""}'>
+
+            <label for='name'>Name</label>
+            <input type='text' name='name' value='${categoryData.name || ""}'>
+        </div>
+        <button type='submit' name='edit'>Save Changes</button>
+    `;
 }
