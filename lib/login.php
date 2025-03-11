@@ -37,26 +37,6 @@ if(isset($_POST['login'])) {
             die("Account is locked.");
         }
 
-        if(isset($_COOKIE['rememberMe'])) {
-            $token = $_COOKIE['rememberMe'];
-        
-            // Query the users table to find the user associated with the token
-            $stmt = $userDB->prepare("SELECT userID FROM users WHERE rememberMe = ?");
-            $stmt->bind_param("s", $token);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $user = $result->fetch_assoc();
-            $stmt->close();
-        
-            if ($user) {
-                // Log the user in automatically
-                $_SESSION['userID'] = $user['userID'];
-                // Redirect to the dashboard or homepage
-                header("Location: dashboard.php");
-                exit();
-            }
-        }
-
         if(password_verify($password, $passwordHash)) {
             $_SESSION['userID'] = $userID;
             $_SESSION['email'] = $email;

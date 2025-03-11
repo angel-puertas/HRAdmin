@@ -1,24 +1,30 @@
 <?php
 include_once('lib/db.php');
 include_once('templates/header.tpl.php');
-if(!empty($_SESSION) && $_SESSION['isAdmin'] == 0) {
+
+// Deny access if account is not admin
+if(empty($_SESSION) || !isset($_SESSION['isAdmin']) || $_SESSION['isAdmin'] != 1) {
     header("HTTP/1.1 403 Forbidden");
     die("You do not have permission to access this page.");
-} else {
+}
+
 $sql = "SELECT * FROM users";
 $result = $userDB->query($sql);
 $users = [];
-
 while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
     $users[] = $row;
 }
 
+/*//////////////////////////////////////////////////////////////
+                            ACTIONS
+//////////////////////////////////////////////////////////////*/
 if (isset($_POST['update'])) {
     $maxFailedLogins = (int) $_POST['maxFailedLogins'];
     $stmt = $userDB->prepare("UPDATE settings SET settingValue = ? WHERE settingKey = 'maxFailedLogins'");
     $stmt->bind_param("i", $maxFailedLogins);
     $stmt->execute();
     $stmt->close();
+    header("Location: /HRAdmin/admin.php");
 }
 
 if (isset($_POST['activate'])) {
@@ -27,6 +33,7 @@ if (isset($_POST['activate'])) {
     $stmt->bind_param("i", $userID);
     $stmt->execute();
     $stmt->close();
+    header("Location: /HRAdmin/admin.php");
 }
 
 if (isset($_POST['lock'])) {
@@ -35,6 +42,7 @@ if (isset($_POST['lock'])) {
     $stmt->bind_param("i", $userID);
     $stmt->execute();
     $stmt->close();
+    header("Location: /HRAdmin/admin.php");
 }
 
 if (isset($_POST['unlock'])) {
@@ -43,9 +51,13 @@ if (isset($_POST['unlock'])) {
     $stmt->bind_param("i", $userID);
     $stmt->execute();
     $stmt->close();
+    header("Location: /HRAdmin/admin.php");
 }
 ?>
 
+<!-- /*//////////////////////////////////////////////////////////////
+                                  PAGE
+//////////////////////////////////////////////////////////////*/ -->
 <div class='body'>
 <h2>System Configuration</h2>
 <div>
@@ -103,7 +115,4 @@ if (isset($_POST['unlock'])) {
 </table>
 </div>
 
-<?php
-}
-include_once('templates/footer.tpl.php'); 
-?>
+<?php include_once('templates/footer.tpl.php'); ?>
