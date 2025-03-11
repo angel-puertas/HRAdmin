@@ -21,7 +21,7 @@ session_start();
     <div class='grid-container'>
         <div class='logo'>
             <img src='images/logo.png' alt='logo'>
-            <?php if(!empty($_SESSION['user_id'])) { ?>
+            <?php if(!empty($_SESSION['userID'])) { ?>
                 <div>Logged in as: <?=$_SESSION['email']?></div>
             <?php } ?>
         </div>

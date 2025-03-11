@@ -57,6 +57,11 @@ function handleLogin(form) {
             <input type='password' name='password' id='password'>
             <div id='invalid-password-message'></div>
         </div>
+        <div class="remember-me">
+            <label for="rememberMe">Remember Me</label>
+            <input type='checkbox' name='rememberMe' id='rememberMe' value='1'>
+        </div>
+
         <div id="recaptcha-container"></div>
         <input type='hidden' name='recaptcha-token' id='recaptcha-token'>
         <input type='hidden' name='login'>
@@ -304,7 +309,7 @@ function handlePersonAdd(form) {
             <label for='resume'>Resume</label>
             <input type='text' name='resume' value=''>
         </div>
-        <button type='submit' name='add'>Add Person</button>
+        <button type='submit' name='add'>Submit</button>
     `;
 }
 
@@ -361,7 +366,7 @@ function handleCategoryAdd(form) {
             <label for='name'>Name</label>
             <input type='text' name='name' value=''>
         </div>
-        <button type='submit' name='add'>Add Category</button>
+        <button type='submit' name='add'>Submit</button>
     `;
 }
 

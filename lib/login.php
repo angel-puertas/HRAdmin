@@ -37,15 +37,47 @@ if(isset($_POST['login'])) {
             die("Account is locked.");
         }
 
+        if(isset($_COOKIE['rememberMe'])) {
+            $token = $_COOKIE['rememberMe'];
+        
+            // Query the users table to find the user associated with the token
+            $stmt = $userDB->prepare("SELECT userID FROM users WHERE rememberMe = ?");
+            $stmt->bind_param("s", $token);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $user = $result->fetch_assoc();
+            $stmt->close();
+        
+            if ($user) {
+                // Log the user in automatically
+                $_SESSION['userID'] = $user['userID'];
+                // Redirect to the dashboard or homepage
+                header("Location: dashboard.php");
+                exit();
+            }
+        }
+
         if(password_verify($password, $passwordHash)) {
-            $_SESSION['user_id'] = $userID;
+            $_SESSION['userID'] = $userID;
             $_SESSION['email'] = $email;
             $_SESSION['isAdmin'] = $isAdmin;
 
+            // Reset failedLoginCount
             $stmt = $userDB->prepare("UPDATE users SET failedLoginCount = 0 WHERE userID = ?");
             $stmt->bind_param("i", $userID);
             $stmt->execute();
             $stmt->close();
+
+            // Create Remember Me Cookie
+            if(isset($_POST['rememberMe']) && $_POST['rememberMe'] == '1') {
+                $token = bin2hex(random_bytes(16));
+                setcookie('rememberMe', $token, time() + (86400 * 30), "/"); // 30 days
+                
+                $stmt = $userDB->prepare("UPDATE users SET rememberMe = ? WHERE userID = ?");
+                $stmt->bind_param("si", $token, $userID);
+                $stmt->execute();
+                $stmt->close();
+            }
 
             exit("Login successful");
         } else {
