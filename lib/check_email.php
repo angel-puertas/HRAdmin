@@ -14,7 +14,7 @@ if(isset($_POST['email'])){
         exit('taken');
     } else {
         $stmt->close();
-        echo('available');
+        exit('available');
     }
 }
 ?>

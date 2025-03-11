@@ -19,7 +19,6 @@ if(isset($_POST['email-confirmation'])) {
         $stmt->execute();
         $stmt->close();
     
-        $userDB->close();
         exit('Email confirmation successful');
     } else {
         die('Wrong confirmation code');

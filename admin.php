@@ -13,6 +13,14 @@ while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
     $users[] = $row;
 }
 
+if (isset($_POST['update'])) {
+    $maxFailedLogins = (int) $_POST['maxFailedLogins'];
+    $stmt = $userDB->prepare("UPDATE settings SET settingValue = ? WHERE settingKey = 'maxFailedLogins'");
+    $stmt->bind_param("i", $maxFailedLogins);
+    $stmt->execute();
+    $stmt->close();
+}
+
 if (isset($_POST['activate'])) {
     $userID = $_POST['userID'];
     $stmt = $userDB->prepare("UPDATE users SET isEmailConfirmed = 1 WHERE userID = ?");
@@ -39,8 +47,17 @@ if (isset($_POST['unlock'])) {
 ?>
 
 <div class='body'>
-<input type="text" id='searchInput' placeholder='Search'></input>
+<h2>System Configuration</h2>
+<div>
+    <form method='post'>
+        <label for='maxFailedLogins'>Max Failed Logins:</label>
+        <input type='text' name='maxFailedLogins'>
+        <button type='submit' name='update'>Update</button>
+    </form>
+</div>
 
+<br>
+<h2>User Management</h2>
 <table>
     <thead>
         <tr>

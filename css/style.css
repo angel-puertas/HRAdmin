@@ -91,13 +91,13 @@
   text-decoration: underline;
 }
 
-form,
+/* form,
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   margin-bottom: 1rem;
-}
+} */
 
 .close {
   position: absolute;
