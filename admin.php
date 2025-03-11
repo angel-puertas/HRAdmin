@@ -18,10 +18,19 @@ while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 /*//////////////////////////////////////////////////////////////
                             ACTIONS
 //////////////////////////////////////////////////////////////*/
-if (isset($_POST['update'])) {
+if (isset($_POST['updateMaxFailedLogins'])) {
     $maxFailedLogins = (int) $_POST['maxFailedLogins'];
     $stmt = $userDB->prepare("UPDATE settings SET settingValue = ? WHERE settingKey = 'maxFailedLogins'");
     $stmt->bind_param("i", $maxFailedLogins);
+    $stmt->execute();
+    $stmt->close();
+    header("Location: /HRAdmin/admin.php");
+}
+
+if (isset($_POST['updateRememberMeDaysToExpiration'])) {
+    $rememberMeDaysToExpiration = (int) $_POST['rememberMeDaysToExpiration'];
+    $stmt = $userDB->prepare("UPDATE settings SET settingValue = ? WHERE settingKey = 'rememberMeDaysToExpiration'");
+    $stmt->bind_param("i", $rememberMeDaysToExpiration);
     $stmt->execute();
     $stmt->close();
     header("Location: /HRAdmin/admin.php");
@@ -64,7 +73,12 @@ if (isset($_POST['unlock'])) {
     <form method='post'>
         <label for='maxFailedLogins'>Max Failed Logins:</label>
         <input type='text' name='maxFailedLogins'>
-        <button type='submit' name='update'>Update</button>
+        <button type='submit' name='updateMaxFailedLogins'>Update</button>
+    </form>
+    <form method='post'>
+        <label for='rememberMeDaysToExpiration'>Remember Me days to expiration:</label>
+        <input type='text' name='rememberMeDaysToExpiration'>
+        <button type='submit' name='updateRememberMeDaysToExpiration'>Update</button>
     </form>
 </div>
 

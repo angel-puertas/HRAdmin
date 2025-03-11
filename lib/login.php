@@ -48,10 +48,15 @@ if(isset($_POST['login'])) {
             $stmt->execute();
             $stmt->close();
 
+            $sql = "SELECT settingValue FROM settings WHERE settingKey = 'rememberMeDaysToExpiration'";
+            $result = $userDB->query($sql);
+            $row = $result->fetch_assoc();
+            $rememberMeDaysToExpiration = (int) $row['settingValue'];
+
             // Create Remember Me Cookie
             if(isset($_POST['rememberMe']) && $_POST['rememberMe'] == '1') {
                 $token = bin2hex(random_bytes(16));
-                setcookie('rememberMe', $token, time() + (86400 * 30), "/"); // 30 days
+                setcookie('rememberMe', $token, time() + (86400 * $rememberMeDaysToExpiration), "/"); // 30 days
                 
                 $stmt = $userDB->prepare("UPDATE users SET rememberMe = ? WHERE userID = ?");
                 $stmt->bind_param("si", $token, $userID);
